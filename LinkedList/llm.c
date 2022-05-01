@@ -1,36 +1,142 @@
 #include "ll.h"
 
-int main()
+Node *create_node(int value)
 {
-    Node *head = NULL;
+    Node *temp = (Node *)malloc(sizeof(Node));
+    temp->data = value;
+    temp->next = NULL;
 
-    append(&head, 5);
-    append(&head, 60);
-    append(&head, 5);
-    append(&head, 60);
-    append(&head, 5);
-    append(&head, 60);
-    append(&head, 56);
-    append(&head, 57);
-    traverse(head);
+    return temp;
+}
 
-    int position, data;
- 
-    // // char buffer;
-    printf("Enter the position where you want to delete a node:");
-    scanf("%d",&position);
+void append(Node **head, int value)
+{
 
-    printf("The linked list after deletion is :\n");
-    delete_node(&head,position);
-    traverse(head);
-    // length_of_ll(&head);
-    // printf("Enter the data you want to enter :");
-    // scanf("%d", &data);
-    // printf("Enter the position after which you want to insert new node :");
-    // scanf("%d", &position);
-    // printf("The linked list after insertig is : \n");
-    insert_after(&head, position, data);
-    traverse(head);
+    Node *temp = create_node(value);
 
-    return 0;
+    Node *current = *head;
+
+    if (*head == NULL)
+    {
+        *head = temp;
+        return;
+    }
+
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+    current->next = temp;
+}
+
+void traverse(Node *pthead)
+{
+    while (pthead != NULL)
+    {
+        printf("%d ", pthead->data);
+        pthead = pthead->next;
+    }
+    printf("\n");
+}
+
+void delete_node(Node **head, int position)
+{
+    Node *temp, *new_node;
+    int i = 1;
+    temp = *head;
+    while (i < position - 1)
+    {
+        temp = temp->next;
+        i++;
+    }
+    new_node = temp->next;
+    temp->next = new_node->next;
+    free(new_node);
+}
+
+int length_of_ll(Node **head)
+{
+    Node *temp = *head;
+    int count = 0;
+    while (temp != NULL)
+    {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+// Inserting at nth position
+
+void insert_at(Node **head, int position, int data)
+{
+    if (position > length_of_ll(head))
+    {
+        printf("Insertion of Node not possible");
+    }
+    else
+    {
+        Node *temp, *new_node;
+        int i = 1;
+        temp = *head;
+        while (i < position -1)
+        {
+            temp = temp->next;
+            i++;
+        }
+        new_node = (Node *)malloc(sizeof(Node));
+        new_node->data = data;
+        new_node->next = temp->next;
+        temp->next = new_node;
+    }
+}
+
+// Inserting after nth position
+
+void insert_after(Node **head, int position, int data)
+{
+    if (position > length_of_ll(head))
+    {
+        printf("Insertion not possible");
+    }
+    else
+    {
+        Node *temp, *new_node;
+        int i = 1;
+        temp = *head;
+        while (i < position)
+        {
+            temp = temp->next;
+            i++;
+        }
+        new_node = (Node *)malloc(sizeof(Node));
+        new_node->data = data;
+        new_node->next = temp->next;
+        temp->next = new_node;
+    }
+}
+
+// Inserting before nth position
+
+void insert_before(Node **head, int position, int data)
+{
+    if (position > length_of_ll(head))
+    {
+        printf("Insertion not possible");
+    }
+    else
+    {
+        Node *temp, *new_node;
+        int i =1;
+        temp = *head;
+        while (i< position -2)
+        {
+            temp = temp->next;
+            i++;
+        }
+        new_node = (Node *)malloc(sizeof(Node));
+        new_node->data = data;
+        new_node->next = temp->next;
+        temp->next = new_node;
+    }
 }
